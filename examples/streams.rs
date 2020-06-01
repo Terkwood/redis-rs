@@ -36,6 +36,16 @@ fn main() {
     // Launch consumer threads which repeatedly read from the
     // streams at various speeds.  They'll effectively compete
     // to consume the stream.
+    //
+    // Consumer groups are only appropriate for cases where you
+    // do NOT want each consumer to read ALL of the data.  This
+    // example is a contrived scenario so that each consumer
+    // receives its own, specific chunk of data.
+    //
+    // Once the data is read, it needs to be acknowledged.
+    //
+    // Read more about reading with consumer groups here:
+    // https://redis.io/commands/xreadgroup
     for slowness in 2..4 {
         let repeat = 5;
         handles.push(thread::spawn(move || {
