@@ -585,7 +585,9 @@ impl FromRedisValue for StreamPendingReply {
 
 impl FromRedisValue for StreamPendingCountReply {
     fn from_redis_value(v: &Value) -> RedisResult<Self> {
+        println!("THE VAL {:?}", v);
         let parts: Vec<((String, String, usize, usize),)> = from_redis_value(v)?;
+        println!("THE PARTS {:?}", parts);
         let mut reply = StreamPendingCountReply::default();
         for row in parts {
             println!("TEH ROW {:?}", row);
