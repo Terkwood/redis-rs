@@ -585,14 +585,14 @@ impl FromRedisValue for StreamPendingReply {
 
 impl FromRedisValue for StreamPendingCountReply {
     fn from_redis_value(v: &Value) -> RedisResult<Self> {
-        let parts: Vec<Vec<(String, String, usize, usize)>> = from_redis_value(v)?;
+        let parts: Vec<((String, String, usize, usize),)> = from_redis_value(v)?;
         let mut reply = StreamPendingCountReply::default();
-        for row in parts {
+        for ((id, consumer, last_delivered_ms, times_delivered),) in parts {
             reply.ids.push(StreamPendingId {
-                id: row[0].0.to_owned(),
-                consumer: row[0].1.to_owned(),
-                last_delivered_ms: row[0].2.to_owned(),
-                times_delivered: row[0].3.to_owned(),
+                id,
+                consumer,
+                last_delivered_ms,
+                times_delivered,
             });
         }
         Ok(reply)
